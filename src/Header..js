@@ -1,8 +1,8 @@
 import React from 'react'
 
-function Header() {
+function Header({title}) {
   return (
-    <header>Grocery List</header>
+    <header>{title}</header>
   )
 }
 
