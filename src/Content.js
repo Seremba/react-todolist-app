@@ -20,6 +20,11 @@ const [items, setItems] = useState([
     id: 3,
     checked: false,
     item: "item 3"
+  },
+  {
+    id: 4,
+    checked: false,
+    item: "item 3"
   }
 ]);
 // logic for handling checking with map
