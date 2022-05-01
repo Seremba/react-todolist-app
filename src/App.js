@@ -7,11 +7,12 @@ import { useState, useEffect } from 'react'
 
 
 function App() {
-  const API_URL = "http://localhost:3500/itemss";
+  const API_URL = "http://localhost:3500/items";
   const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState(''); 
   const [search, setSearch] = useState('');
   const [fetchError, setFetchError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   // console.log("before use effect") 
 
   useEffect(() => {
@@ -21,16 +22,21 @@ function App() {
           const response = await fetch(API_URL);
           if(!response.ok) throw Error("Did not receive expected data");
           const listItems = await response.json();
-          console.log(listItems)
+          // console.log(listItems)
           setItems(listItems);
           setFetchError(null);
        } catch(err) {
           // console.log(err.message);
           setFetchError(err.message);
+       } finally {
+         setIsLoading(false)
        }
     }
-
-    fetchItems();
+    
+    setTimeout(() => {
+      fetchItems();
+    }, 2000);
+    
   }, []);
 
   // console.log("after use effect")
@@ -78,8 +84,9 @@ function App() {
        setSearch = {setSearch}  
       />
       <main>
+        {isLoading && <p>loading items..</p>}
         {fetchError && <p style={{color: "red"}}>{`error: ${fetchError}`}</p>}
-       { !fetchError && <Content
+       { !fetchError && !isLoading && <Content
         items={items.filter(item => ((item.item).toLowerCase()).includes(search.toLowerCase()))}
         setItems ={setItems}
         handle2Check = {handle2Check}
